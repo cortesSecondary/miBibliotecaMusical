@@ -42,7 +42,6 @@ class SongListAdapter(): ListAdapter<Song, RecyclerView.ViewHolder>(SongDiffCall
             {
                 itemTitle.text = song.titulo
                 itemDuration.text = convertDuration(song.duracion)
-                itemDuration.text = song.duracion.toString()
                 Glide.with(context)
                     .load("https://source.boomplaymusic.com/group10/M00/04/12/eba714a6f0c445c68e8e23e639a03409_320_320.jpg")
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -67,7 +66,6 @@ class SongListAdapter(): ListAdapter<Song, RecyclerView.ViewHolder>(SongDiffCall
         val minutes = seconds / 60
         val secondsRes = seconds % 60
 
-        Log.e("Tiempo", "$minutes:${String.format("%02d", secondsRes)}")
         return "$minutes:${String.format("%02d", secondsRes)}"
     }
 }

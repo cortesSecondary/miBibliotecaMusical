@@ -15,7 +15,8 @@
         android:layout_margin="@dimen/common_dimen_min"
         android:hint="Buscar..."
         android:inputType="text"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSongs"

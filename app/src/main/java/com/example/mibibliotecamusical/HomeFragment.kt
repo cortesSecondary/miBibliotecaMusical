@@ -109,6 +109,7 @@ class HomeFragment : Fragment() {
                 withContext(Dispatchers.Main)
                 {
                     mPodcastListAdapter.submitList(podcasts)
+                    Log.e("Podcast", podcasts.toString())
                     Log.e("Podcast", "Submited")
                 }
             } catch (e: Exception)

@@ -41,7 +41,7 @@ class AlbumListAdapter(): ListAdapter<Album, RecyclerView.ViewHolder>(AlbumDiffC
             {
                 itemTitle.text = album.titulo
                 Glide.with(context)
-                    .load("https://source.boomplaymusic.com/group10/M00/04/12/eba714a6f0c445c68e8e23e639a03409_320_320.jpg")
+                    .load(BibliotecaApplication.albumImages[position])
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(itemImage)
