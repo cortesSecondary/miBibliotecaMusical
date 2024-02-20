@@ -7,4 +7,5 @@ object Constants {
     const val PODCAST_PATH = "/podcasts"
     const val SONGS_PATH = "/canciones"
     const val USERS_PATH = "/usuarios"
+    const val USER_POST_PATH = "/usuario"
 }
