@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:background="@color/background">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Playlists -->
     <TextView
+        android:id="@+id/tvPlaylists"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="Tus playlists más escuchadas"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/common_dimen_default"
+        android:layout_marginLeft="@dimen/common_dimen_default"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPlaylists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_home"
+        app:layout_constraintTop_toBottomOf="@id/tvPlaylists"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Albums -->
+    <TextView
+        android:id="@+id/tvAlbums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Álbumes populares"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/common_dimen_default"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewPlaylists"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAlbums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_home"
+        app:layout_constraintTop_toBottomOf="@id/tvAlbums"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Podcasts -->
+    <TextView
+        android:id="@+id/tvPodcasts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Podcasts recomendados"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/common_dimen_default"
+        android:layout_marginLeft="@dimen/common_dimen_default"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewAlbums"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPodcasts"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_home_card_dimen_height"
+        android:layout_marginTop="@dimen/common_dimen_default"
+        app:layout_constraintTop_toBottomOf="@id/tvPodcasts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

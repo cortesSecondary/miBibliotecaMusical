@@ -8,8 +8,4 @@
         android:id="@+id/searchOption"
         android:icon="@drawable/ic_search"
         android:title="Buscar" />
-    <item
-        android:id="@+id/playlistsOption"
-        android:icon="@drawable/ic_library_music"
-        android:title="Playlists" />
 </menu>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_dimen_min">8dp</dimen>
+    <dimen name="common_dimen_default">16dp</dimen>
+    <dimen name="common_dimen_max">32dp</dimen>
+    <dimen name="item_home_card_dimen_height">180dp</dimen>
+</resources>
