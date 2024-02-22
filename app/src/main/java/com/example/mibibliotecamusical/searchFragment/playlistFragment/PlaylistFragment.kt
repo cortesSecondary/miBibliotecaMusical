@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,8 +19,10 @@ import com.example.mibibliotecamusical.utils.OnClickListener
 import com.example.mibibliotecamusical.R
 import com.example.mibibliotecamusical.services.PlaylistService
 import com.example.mibibliotecamusical.databinding.FragmentPlaylistBinding
+import com.example.mibibliotecamusical.entities.AnyadeCancionPlaylist
 import com.example.mibibliotecamusical.entities.Playlist
 import com.example.mibibliotecamusical.entities.Song
+import com.example.mibibliotecamusical.services.AnyadeCancionPlaylistService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,6 +52,8 @@ class PlaylistFragment : Fragment(), OnClickListener {
         setupRecyclerView()
         loadPlaylists()
         setupSearchView()
+
+
     }
 
     private fun loadPlaylists()
@@ -78,7 +83,8 @@ class PlaylistFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView()
+    {
         mPlaylistFragmentListAdapter = PlaylistFragmentListAdapter(this)
         mLinearLayoutManager = LinearLayoutManager(requireContext())
 
@@ -91,7 +97,8 @@ class PlaylistFragment : Fragment(), OnClickListener {
         loadPlaylists()
     }
 
-    private fun setupSearchView() {
+    private fun setupSearchView()
+    {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filter(s.toString())
@@ -103,19 +110,49 @@ class PlaylistFragment : Fragment(), OnClickListener {
         })
     }
 
-    private fun filter(text: String) {
+    private fun filter(text: String)
+    {
         val filteredPlaylists = originalPlaylists.filter { playlist ->
             playlist.titulo.contains(text, ignoreCase = true)
         }
         mPlaylistFragmentListAdapter.submitList(filteredPlaylists)
     }
 
-    override fun addSong(song: Song) {
+    override fun addSong(song: Song)
+    {
         TODO("Not yet implemented")
     }
 
-    override fun addPlaylist(playlist: Playlist) {
-        BibliotecaApplication.playlistID = playlist.id.toString()
-        findNavController().navigate(R.id.action_playlistFragment_to_searchOption)
+    override fun addPlaylist(playlist: Playlist)
+    {
+        val anyadeCancionPlaylist = AnyadeCancionPlaylist(id_playlist = playlist.id.toInt(), id_cancion = BibliotecaApplication.songID)
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(AnyadeCancionPlaylistService::class.java)
+
+        lifecycleScope.launch {
+            try {
+                val result = service.postCancionPlaylist(anyadeCancionPlaylist)
+                val songInPlaylist = result.body()!!
+
+                if (songInPlaylist != null)
+                {
+                    Toast.makeText(requireContext(), "Canción añadida a la playlist.", Toast.LENGTH_SHORT).show()
+
+                    findNavController().navigate(R.id.action_playlistFragment_to_searchOption)
+                }
+                else
+                {
+                    Toast.makeText(requireContext(), "Error al registrar la playlist, inténtalo de nuevo.", Toast.LENGTH_SHORT).show()
+                }
+
+            } catch (e: Exception) {
+                Log.e("AddUser Error", e.toString())
+            }
+        }
     }
 }

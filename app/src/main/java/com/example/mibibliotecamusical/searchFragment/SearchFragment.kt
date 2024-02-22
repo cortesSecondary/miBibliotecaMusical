@@ -107,7 +107,7 @@ class SearchFragment : Fragment(), OnClickListener {
     }
 
     override fun addSong(song: Song) {
-        BibliotecaApplication.songID = song.id.toString()
+        BibliotecaApplication.songID = song.id
         findNavController().navigate(R.id.action_searchOption_to_playlistFragment)
     }
 

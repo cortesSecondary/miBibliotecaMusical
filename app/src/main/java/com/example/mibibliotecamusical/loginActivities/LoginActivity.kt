@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity()
                     }
                     else if ((user.username == username || user.email == username) && user.password == password) {
                         // Correct login
-                        BibliotecaApplication.userID = user.id.toString()
+                        BibliotecaApplication.userID = user.id
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         loginSuccessful = true

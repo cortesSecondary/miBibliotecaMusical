@@ -6,9 +6,8 @@ class BibliotecaApplication: Application()
 {
     companion object
     {
-        var userID = Int.Companion.toString()
-        var songID = Int.Companion.toString()
-        var playlistID = Int.Companion.toString()
+        var userID: Int = 0
+        var songID: Int = 0
         val albumImages = listOf(
             "https://discmedi.com/portadas/SON62972.jpg?w=600",
             "https://m.media-amazon.com/images/I/61pO8rENBML._UF894,1000_QL80_.jpg",
