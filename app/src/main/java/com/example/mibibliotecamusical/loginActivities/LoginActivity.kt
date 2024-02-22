@@ -1,13 +1,16 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.loginActivities
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.mibibliotecamusical.BibliotecaApplication
+import com.example.mibibliotecamusical.homeFragment.MainActivity
 import com.example.mibibliotecamusical.databinding.ActivityLoginBinding
+import com.example.mibibliotecamusical.services.UserService
+import com.example.mibibliotecamusical.utils.Constants
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,6 +32,11 @@ class LoginActivity : AppCompatActivity()
 
             checkCredentials(username, password)
         }
+
+        binding.registerButton.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkCredentials(username: String, password: String)
@@ -49,9 +57,13 @@ class LoginActivity : AppCompatActivity()
 
                 for (user in users)
                 {
-                    if ((user.username == username || user.email == username) && user.password == password)
+                    if (username == "" || password == "")
                     {
+                        Toast.makeText(this@LoginActivity, "Por favor, rellena los campos.", Toast.LENGTH_SHORT).show()
+                    }
+                    else if ((user.username == username || user.email == username) && user.password == password) {
                         // Correct login
+                        BibliotecaApplication.userID = user.id.toString()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         loginSuccessful = true

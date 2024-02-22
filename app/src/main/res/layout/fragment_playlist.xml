@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".searchFragment.SearchFragment"
+    tools:context=".searchFragment.playlistFragment.PlaylistFragment"
     android:background="@color/background">
 
     <EditText
@@ -14,19 +14,18 @@
         android:layout_margin="@dimen/common_dimen_default"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/background_search_bar"
-        android:hint="Buscar canciones..."
+        android:hint="Buscar playlists..."
         android:textSize="16sp"
         android:padding="@dimen/common_dimen_min"
         android:elevation="2dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSongs"
+        android:id="@+id/recyclerViewPlaylists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_find_song"
-        app:layout_constraintTop_toBottomOf="@+id/etSearch"
+        app:layout_constraintTop_toBottomOf="@id/etSearch"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/common_dimen_min"/>
 

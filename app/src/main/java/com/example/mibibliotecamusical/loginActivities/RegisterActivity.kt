@@ -1,4 +1,4 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.loginActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.mibibliotecamusical.databinding.ActivityRegisterBinding
+import com.example.mibibliotecamusical.entities.User
+import com.example.mibibliotecamusical.services.UserService
+import com.example.mibibliotecamusical.utils.Constants
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

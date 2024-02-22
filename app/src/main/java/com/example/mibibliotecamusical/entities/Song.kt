@@ -1,7 +1,7 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.entities
 
 data class Song(
-    var id: Long,
+    var id: Int,
     var titulo: String,
     var duracion: Int,
     var numeroReproducciones: Int

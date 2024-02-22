@@ -1,4 +1,4 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.homeFragment
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mibibliotecamusical.services.AlbumService
+import com.example.mibibliotecamusical.utils.Constants
+import com.example.mibibliotecamusical.services.PlaylistService
+import com.example.mibibliotecamusical.services.PodcastService
 import com.example.mibibliotecamusical.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,33 +41,9 @@ class HomeFragment : Fragment() {
     {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-    }
-
-    private fun loadAlbums()
-    {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(AlbumService::class.java)
-
-        lifecycleScope.launch {
-            try {
-                val result = service.getAlbums()
-                val albums = result.body()!!
-
-                withContext(Dispatchers.Main)
-                {
-                    mAlbumListAdapter.submitList(albums)
-                    Log.e("Album", "Submited")
-                }
-            } catch (e: Exception)
-            {
-                Log.e("Retrofit album error", e.toString())
-            }
-        }
+        setupRecyclerViewPlaylists()
+        setupRecyclerViewAlbums()
+        setupRecyclerViewPodcasts()
     }
 
     private fun loadPlaylists()
@@ -83,11 +63,35 @@ class HomeFragment : Fragment() {
                 withContext(Dispatchers.Main)
                 {
                     mPlaylistListAdapter.submitList(playlists)
-                    Log.e("Playlist", "Submited")
                 }
             } catch (e: Exception)
             {
                 Log.e("Retrofit playlist error", e.toString())
+            }
+        }
+    }
+
+    private fun loadAlbums()
+    {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(AlbumService::class.java)
+
+        lifecycleScope.launch {
+            try {
+                val result = service.getAlbums()
+                val albums = result.body()!!
+
+                withContext(Dispatchers.Main)
+                {
+                    mAlbumListAdapter.submitList(albums)
+                }
+            } catch (e: Exception)
+            {
+                Log.e("Retrofit album error", e.toString())
             }
         }
     }
@@ -109,8 +113,6 @@ class HomeFragment : Fragment() {
                 withContext(Dispatchers.Main)
                 {
                     mPodcastListAdapter.submitList(podcasts)
-                    Log.e("Podcast", podcasts.toString())
-                    Log.e("Podcast", "Submited")
                 }
             } catch (e: Exception)
             {
@@ -119,21 +121,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView()
+    private fun setupRecyclerViewPlaylists()
     {
-        mAlbumListAdapter = AlbumListAdapter()
         mPlaylistListAdapter = PlaylistListAdapter()
-        mPodcastListAdapter = PodcastListAdapter()
-
-        val mLinearLayoutManagerAlbum = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val mLinearLayoutManagerPlaylist = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val mLinearLayoutManagerPodcast = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        binding.recyclerViewAlbums.apply {
-            setHasFixedSize(true)
-            layoutManager = mLinearLayoutManagerAlbum
-            adapter = mAlbumListAdapter
-        }
 
         binding.recyclerViewPlaylists.apply {
             setHasFixedSize(true)
@@ -141,15 +132,34 @@ class HomeFragment : Fragment() {
             adapter = mPlaylistListAdapter
         }
 
+        loadPlaylists()
+    }
+
+    private fun setupRecyclerViewAlbums()
+    {
+        mAlbumListAdapter = AlbumListAdapter()
+        val mLinearLayoutManagerAlbum = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        binding.recyclerViewAlbums.apply {
+            setHasFixedSize(true)
+            layoutManager = mLinearLayoutManagerAlbum
+            adapter = mAlbumListAdapter
+        }
+
+        loadAlbums()
+    }
+
+    private fun setupRecyclerViewPodcasts()
+    {
+        mPodcastListAdapter = PodcastListAdapter()
+        val mLinearLayoutManagerPodcast = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         binding.recyclerViewPodcasts.apply {
             setHasFixedSize(true)
             layoutManager = mLinearLayoutManagerPodcast
-            adapter = mPlaylistListAdapter
+            adapter = mPodcastListAdapter
         }
 
-        // Load Data
-        loadPlaylists()
-        loadAlbums()
         loadPodcasts()
     }
 }

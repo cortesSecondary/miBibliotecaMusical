@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".loginActivities.LoginActivity"
     android:background="@drawable/background_login">
 
     <ImageView
@@ -190,7 +190,7 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 app:dividerColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 

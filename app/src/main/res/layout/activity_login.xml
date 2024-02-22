@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".loginActivities.LoginActivity"
     android:background="@drawable/background_login">
 
     <ImageView
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:drawableEnd="@drawable/ic_alternate_email"/>
+                    android:drawableEnd="@drawable/ic_alternate_email" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,11 +104,30 @@
                 android:backgroundTint="@color/orange"
                 app:cornerRadius="@dimen/common_dimen_max" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Registrarme"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/orange"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/loginButton"
+                android:layout_marginTop="@dimen/common_dimen_min"
+                android:layout_marginStart="@dimen/common_dimen_max"
+                android:layout_marginEnd="@dimen/common_dimen_max"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="@dimen/common_dimen_max"
+                app:strokeColor="@color/orange"
+                app:strokeWidth="2dp"/>
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="60dp"
                 app:dividerColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+                app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

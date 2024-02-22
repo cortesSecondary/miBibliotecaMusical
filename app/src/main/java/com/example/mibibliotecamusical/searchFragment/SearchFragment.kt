@@ -1,4 +1,4 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.searchFragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,23 +9,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mibibliotecamusical.BibliotecaApplication
+import com.example.mibibliotecamusical.utils.Constants
+import com.example.mibibliotecamusical.utils.OnClickListener
+import com.example.mibibliotecamusical.R
+import com.example.mibibliotecamusical.entities.Song
+import com.example.mibibliotecamusical.services.SongService
 import com.example.mibibliotecamusical.databinding.FragmentSearchBinding
+import com.example.mibibliotecamusical.entities.Playlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Locale
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), OnClickListener {
 
     private lateinit var binding: FragmentSearchBinding
 
     private lateinit var mSongListAdapter: SongListAdapter
     private lateinit var mLinearLayoutManager: LinearLayoutManager
 
-    private var filteredSongs: List<Song> = emptyList()
+    private lateinit var originalSongs: List<Song>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,17 +42,15 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-
+        loadSongs()
         setupSearchView()
     }
 
-    private fun loadSongs()
-    {
+    private fun loadSongs() {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -58,22 +63,19 @@ class SearchFragment : Fragment() {
                 val result = service.getSongs()
                 val songs = result.body()!!
 
-                withContext(Dispatchers.Main)
-                {
-                    filteredSongs = songs
+                originalSongs = songs
+
+                withContext(Dispatchers.Main) {
                     mSongListAdapter.submitList(songs)
-                    Log.e("Song", "Submited")
                 }
-            } catch (e: Exception)
-            {
+            } catch (e: Exception) {
                 Log.e("Retrofit song error", e.toString())
             }
         }
     }
 
-    private fun setupRecyclerView()
-    {
-        mSongListAdapter = SongListAdapter()
+    private fun setupRecyclerView() {
+        mSongListAdapter = SongListAdapter(this)
         mLinearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.recyclerViewSongs.apply {
@@ -82,27 +84,34 @@ class SearchFragment : Fragment() {
             adapter = mSongListAdapter
         }
 
-        // Load Data
         loadSongs()
     }
 
     private fun setupSearchView() {
-        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filter(s.toString())
+            }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                val searchText = s.toString().trim().toLowerCase(Locale.getDefault())
-                val filteredSongs = if (searchText.isNotEmpty()) {
-                    filteredSongs.filter { song ->
-                        song.titulo.toLowerCase(Locale.getDefault()).contains(searchText)
-                    }
-                } else {
-                    filteredSongs
-                }
-                mSongListAdapter.submitList(filteredSongs)
-            }
         })
+    }
+
+    private fun filter(text: String) {
+        val filteredSongs = originalSongs.filter { song ->
+            song.titulo.contains(text, ignoreCase = true)
+        }
+        mSongListAdapter.submitList(filteredSongs)
+    }
+
+    override fun addSong(song: Song) {
+        BibliotecaApplication.songID = song.id.toString()
+        findNavController().navigate(R.id.action_searchOption_to_playlistFragment)
+    }
+
+    override fun addPlaylist(playlist: Playlist) {
+        TODO("Not yet implemented")
     }
 }

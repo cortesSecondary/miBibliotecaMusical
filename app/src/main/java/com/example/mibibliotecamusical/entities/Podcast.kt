@@ -1,4 +1,4 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.entities
 
 data class Podcast(
     var id: Long,

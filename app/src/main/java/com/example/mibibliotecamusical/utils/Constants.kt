@@ -1,4 +1,4 @@
-package com.example.mibibliotecamusical
+package com.example.mibibliotecamusical.utils
 
 object Constants {
     const val BASE_URL = "http://lab8.navelsystems.com"
